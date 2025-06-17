@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP Request Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    button {
+      margin: 10px 0;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ccc;
+      max-width: 100%;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+<script>
+  let devtools = { open: false };
+  const threshold = 160;
+  setInterval(() => {
+    const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+    const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+    if (widthThreshold || heightThreshold) {
+      devtools.open = true;
+      window.location.href = "about:blank"; // or show a warning
+    }
+  }, 1000);
+</script>
+
+  <h1>Test HTTP Requests</h1>
+
+  <button onclick="sendGetRequest()">Send GET Request</button>
+  <button onclick="sendPostRequest()">Send POST Request</button>
+
+  <h2>Response:</h2>
+  <pre id="responseArea">Click a button to see the response here.</pre>
+
+  <script>
+    const responseArea = document.getElementById('responseArea');
+    const endpoint = "https://2pvlprjz-8000.asse.devtunnels.ms/test";
+
+    function sendGetRequest() {
+      fetch(endpoint)
+        .then(response => response.text())
+        .then(data => {
+          responseArea.textContent = "GET Response:\n" + data;
+        })
+        .catch(error => {
+          responseArea.textContent = "Error:\n" + error;
+        });
+    }
+
+    function sendPostRequest() {
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ key: "value" })
+      })
+      .then(response => response.text())
+      .then(data => {
+        responseArea.textContent = "POST Response:\n" + data;
+      })
+      .catch(error => {
+        responseArea.textContent = "Error:\n" + error;
+      });
+    }
+  </script>
+
+</body>
+</html>
